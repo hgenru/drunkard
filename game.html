@@ -20,21 +20,27 @@
                 clear_overlay();
                 for (var i=0; i < step_result[2].length; i++) {
                     var new_image = document.createElement('img');
-                    new_image.src = "res/cards/" + step_result[2][i].cost + "_of_" + step_result[2][i].suit + "s.png";
+                    id_ = step_result[2][i].cost + "_of_" + step_result[2][i].suit;
+                    new_image.src = "res/cards/" + id_ + "s.png";
+                    new_image.id = id_
                     new_image.className = "card";
                     new_image.style.borderColor = step_result[3][i].color;
-                    if (step_result[2][i] == step_result[1]) {
-                        console.log(step_result[2][i], step_result[1])
-                        new_image.id = "winner_card";
-                        new_image.style.borderColor = "#FFD700";
-                    }
                     card_container.appendChild(new_image);
+                    if (step_result[2][i] == step_result[1]) {
+                        console.log(id_)
+                        move(id_)
+                            .duration(1000)
+                            .scale(1.1)
+                            .end();
+                    }
                 }
-                var overlay_back = move("#game_overlay.overlay")
-                    .set('visibility', 'hidden');
-                move("#game_overlay.overlay")
+                var overlay_back = move('#game_overlay.overlay')
+                    .set('visibility', 'hidden')
+                    .delay(300)
+                    .end();
+                move('#game_overlay.overlay')
                     .set('visibility', 'visible')
-                    .delay("2s")
+                    .delay(300)
                     .then(overlay_back)
                     .end();
             }
@@ -61,9 +67,7 @@
         </script>
         <div class="container">
             <div class="table">
-                <div class="action_panel_container">
-                    <center><span class="great_btn" onclick="step()">ХОД</span></center>
-                </div>
+                <div class="table_container "><div class="step_button" onclick="step()"/></div></div>
             </div>
             <div id="game_overlay" class="overlay">
                 <div id="game_result" class="result">
