@@ -25,7 +25,6 @@
                     new_image.style.borderColor = step_result[3][i].color;
                     if (step_result[2][i] == step_result[1]) {
                         console.log(step_result[2][i], step_result[1])
-                        sleep(300);
                         new_image.id = "winner_card";
                         new_image.style.borderColor = "#FFD700";
                     }
@@ -35,6 +34,7 @@
                     .set('visibility', 'hidden');
                 move("#game_overlay.overlay")
                     .set('visibility', 'visible')
+                    .delay("2s")
                     .then(overlay_back)
                     .end();
             }
