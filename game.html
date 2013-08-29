@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <script type="text/javascript" src="res/engine.js"></script>
+        <script type="text/javascript" src="res/move.js"></script>
+        <link type="text/css" rel="stylesheet" href="res/game.css"/>
+    </head>
+    <body>
+        <script type="text/javascript">
+            window.onload = function() {
+                var raw_cards = [[2, "club"],[2, "diamond"],[3, "spade"],[4, "spade"],[5, "diamond"],[6, "club"],[8, "spade"]];
+                cards = generate_cards(raw_cards);
+                game = new Game(cards, ["Суйка", "Анон"], ["#04B431", "#FA5858"]);
+            };
+            function step() {
+                var step_result = game.make_step();
+                if (step_result.length <= 1) { win(step_result[0]); return; }
+                var card_container = document.getElementsByName("game_card_container")[0];
+                clear_overlay();
+                for (var i=0; i < step_result[2].length; i++) {
+                    var new_image = document.createElement('img');
+                    new_image.src = "res/cards/" + step_result[2][i].cost + "_of_" + step_result[2][i].suit + "s.png";
+                    new_image.className = "card";
+                    new_image.style.borderColor = step_result[3][i].color;
+                    if (step_result[2][i] == step_result[1]) {
+                        console.log(step_result[2][i], step_result[1])
+                        sleep(300);
+                        new_image.id = "winner_card";
+                        new_image.style.borderColor = "#FFD700";
+                    }
+                    card_container.appendChild(new_image);
+                }
+                var overlay_back = move("#game_overlay.overlay")
+                    .set('visibility', 'hidden');
+                move("#game_overlay.overlay")
+                    .set('visibility', 'visible')
+                    .then(overlay_back)
+                    .end();
+            }
+            function clear_overlay() {
+                var card_container = document.getElementsByName("game_card_container")[0];
+                var old_entries = document.querySelectorAll(".card");
+                for (var i=0; i < old_entries.length; i++) {
+                    var entry = old_entries[i];
+                    if (entry) {
+                        card_container.removeChild(entry);
+                    }
+                }
+            }
+            function win(player) {
+                clear_overlay()
+                var msg = document.createElement('h1');
+                msg.innerHTML = player + " win!";
+                result = document.getElementById("game_result");
+                result.appendChild(msg);
+                move("#game_overlay.overlay")
+                    .set('visibility', 'visible')
+                    .end();;
+            }
+        </script>
+        <div class="container">
+            <div class="table">
+                <div class="action_panel_container">
+                    <center><span class="great_btn" onclick="step()">ХОД</span></center>
+                </div>
+            </div>
+            <div id="game_overlay" class="overlay">
+                <div id="game_result" class="result">
+                    <div name="game_card_container" class="card_container">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
