@@ -17,7 +17,7 @@ body {
 .dispute_box {
     position: absolute;
     width: 100%;
-    top: 10%;
+    top: 5%;
 }
 .dispute_box h1{
     visibility: hidden;
@@ -78,7 +78,7 @@ body {
 .result {
     position: absolute;
     text-align: center;
-    font-size: 42pt;
+    font-size: 38pt;
     left: 30%;
     right: 30%;
     top: 20%;
