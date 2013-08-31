@@ -33,7 +33,10 @@
             };
             function step(old_cache, on_dispute) {
                 var step_result = game.make_step(old_cache, on_dispute);
-                if (step_result["result"] == "win") { win(step_result["winner"]); return; }
+                if (step_result["result"] == "win") {
+                    win(step_result["winner"]);
+                    return;
+                }
                 var card_container = document.getElementsByName("game_card_container")[0];
                 clear_overlay();
                 show_overlay();
@@ -57,6 +60,13 @@
                     setTimeout(function() { dispute(step_result["cards"]) } , 600);
                 }
                 else {
+                    table_box = document.getElementById("table_box");
+                    if (step_result["winner"] == "Суйка") {
+                        table_box.style.backgroundImage="url(res/" + "bg.png)";
+                    }
+                    else {
+                        table_box.style.backgroundImage="url(res/" + "bg_sad.png)";
+                    }
                     setTimeout(hide_overlay, 300);
                 }
             }
@@ -93,12 +103,19 @@
                 }
             }
             function win(player) {
-                clear_overlay()
+                if (player.uid == "Суйка") {
+                    table_box = document.getElementById("table_box");
+                    table_box.style.backgroundImage="url(res/" + "bg_drunk.png)";
+                }
+                else {
+                    table_box.style.backgroundImage="url(res/" + "bg_sad.png)";
+                }
+                clear_overlay();
                 var msg = document.createElement('h1');
                 msg.innerHTML = player + " win!";
                 result = document.getElementById("game_result");
                 result.appendChild(msg);
-                show_overlay();
+                setTimeout(show_overlay, 300);
             }
             Game.prototype.on_update = function() {
                 var player_0 = document.getElementById("player_0");
@@ -112,7 +129,7 @@
                 <h1>Карт у игроков</h1>
                 <h2><span style="color: #04B431;">Суйка Ибуки</span>: <span id="player_0">0</span>  |  <span style="color: #FA5858;">Незнакомец</span>: <span id="player_1">0</span></h2>
             </div>
-            <div class="table">
+            <div id="table_box" class="table">
                 <div class="table_container "><div class="step_button" onclick="step()"/></div></div>
             </div>
             <div id="game_overlay" class="overlay">
