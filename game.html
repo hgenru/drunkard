@@ -10,6 +10,10 @@
     </head>
     <body>
         <script type="text/javascript">
+        /*
+        Я хотел оставить тут кучу комментариев о том, как это все работает,
+        но сроки, как всегда, поджимают и пора бы уже, наконец-то выспаться.
+        */
             window.onload = function() {
                 var raw_cards = [];
                 for (var cost=2; cost < 15; cost++) {
@@ -24,10 +28,13 @@
                 for (var cost=2; cost < 15; cost++) {
                     raw_cards.push([cost, "spade"]);
                 }
+                // Подгружаем изображения, чтобы потом не глючило
+                var img = new Image();
                 for (var i=2; i < raw_cards.length; i++){
-                    var img = new Image();
                     img.src = "res/cards/" + raw_cards[i][0] + "_of_" + raw_cards[i][1] + "s.png";
                 }
+                img.src = "res/bg_sad.png";
+                img.src = "res/bg_drunk.png";
                 cards = generate_cards(raw_cards);
                 game = new Game(cards, ["Суйка", "Незнакомец"], ["#04B431", "#FA5858"]);
             };
@@ -76,7 +83,7 @@
                 var cards = document.querySelectorAll(".card");
                 for (var i=0; i < cards.length; i++) {
                     var entry = cards[i];
-                    entry.src = "http://img0.liveinternet.ru/images/attach/c/2//68/60/68060232_d09778r02.jpg";
+                    entry.src = "res/back.jpg";
                 }
                 setTimeout(function() { step(result_cards, true); }, 600);
             }
@@ -112,10 +119,14 @@
                 }
                 clear_overlay();
                 var msg = document.createElement('h1');
+                var link = document.createElement('a');
                 msg.innerHTML = player + " win!";
+                link.innerHTML = "< назад <"
+                link.href = "/"
                 result = document.getElementById("game_result");
                 result.appendChild(msg);
-                setTimeout(show_overlay, 300);
+                result.appendChild(link);
+                setTimeout(show_overlay, 600);
             }
             Game.prototype.on_update = function() {
                 var player_0 = document.getElementById("player_0");

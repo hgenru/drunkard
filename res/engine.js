@@ -90,7 +90,7 @@ Game.prototype.make_step = function(old_cache, on_dispute) {
     if (this.game_winner) {
         return {
             "result": "win",
-            "winner": this.players[0]};
+            "winner": this.game_winner};
     }
     if (on_dispute) {
         for (var i=0; i < this.players.length; i++) {

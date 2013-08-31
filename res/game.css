@@ -1,7 +1,5 @@
-* {
-    font-size: 14pt;
-}
 body {
+    font-size: 14pt;
     background: #FFFEEE;
 }
 .container {
@@ -82,7 +80,17 @@ body {
     font-size: 42pt;
     left: 30%;
     right: 30%;
-    top: 30%;
+    top: 20%;
+}
+.result h1 {
+    margin: 2px auto;
+}
+.result a {
+    margin: 2px auto;
+    color: #93f18f;
+}
+.result a:hover {
+    color: #61fb5a;
 }
 .card_container {
     position: relative;
