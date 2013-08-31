@@ -2,14 +2,29 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>Серьезный матч | Анон vs Суйка</title>
         <script type="text/javascript" src="res/engine.js"></script>
         <script type="text/javascript" src="res/move.js"></script>
         <link type="text/css" rel="stylesheet" href="res/game.css"/>
+        <link href='http://fonts.googleapis.com/css?family=Underdog&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
     </head>
     <body>
         <script type="text/javascript">
             window.onload = function() {
-                var raw_cards = [[2, "club"],[2, "diamond"],[3, "spade"],[2, "spade"],[5, "diamond"],[7, "club"],[7, "spade"],[7, "diamond"],[7, "diamond"],[7, "diamond"],[7, "diamond"]];
+                var raw_cards = [];
+                for (var cost=2; cost < 15; cost++) {
+                    raw_cards.push([cost, "club"]);
+                }
+                for (var cost=2; cost < 15; cost++) {
+                    raw_cards.push([cost, "diamond"]);
+                }
+                for (var cost=2; cost < 15; cost++) {
+                    raw_cards.push([cost, "heart"]);
+                }
+                for (var cost=2; cost < 15; cost++) {
+                    raw_cards.push([cost, "spade"]);
+                }
+                console.log(raw_cards);
                 cards = generate_cards(raw_cards);
                 game = new Game(cards, ["Суйка", "Анон"], ["#04B431", "#FA5858"]);
             };
@@ -44,7 +59,7 @@
                     setTimeout(function() { dispute(step_result["cards"]) } , 600);
                 }
                 else {
-                    setTimeout(hide_overlay, 200);
+                    setTimeout(hide_overlay, 300);
                 }
             }
             function dispute(result_cards) {
@@ -88,8 +103,18 @@
                 result.appendChild(msg);
                 show_overlay();
             }
+            Game.prototype.on_update = function() {
+                var player_0 = document.getElementById("player_0");
+                var player_1 = document.getElementById("player_1");
+                player_0.innerHTML = this.players[0].deck.cards.length || 0;
+                player_1.innerHTML = this.players[1].deck.cards.length || 0;
+            }
         </script>
         <div class="container">
+        <div class="counter">
+            <h1>Карт у игроков</h1>
+            <h2>Суйка: <span id="player_0"></span>  |  Анон: <span id="player_1"></span></h2>
+        </div>
             <div class="table">
                 <div class="table_container "><div class="step_button" onclick="step()"/></div></div>
             </div>
