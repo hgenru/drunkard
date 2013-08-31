@@ -1,6 +1,13 @@
+* {
+    font-size: 28pt;
+}
+body {
+    background: #FFFEEE;
+}
 .container {
     width: 100%;
     height: 100%;
+    display: block;
 }
 .dispute_box {
     position: absolute;
@@ -20,7 +27,6 @@
     width: 100%;
     height: 90%;
     max-width: 98%;
-    min-width: ;
     bottom: 0;
     background: url("table.png");
     background-size: contain;

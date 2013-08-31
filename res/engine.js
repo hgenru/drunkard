@@ -66,10 +66,12 @@ Game.prototype.share_cards = function(player_count) {
     // console.log("stard share cards...");
     var players_cards = [];
     var cards_to_each = Math.floor(this.cards.length/player_count);
+    console.log(cards_to_each, this.cards.length);
     for (var i=0; player_count > i; i++) {
         cards_to_add = this.cards.splice(0, cards_to_each);
         players_cards.push(cards_to_add);
     }
+    console.log(players_cards);
     return players_cards;
 };
 Game.prototype.on_update = function() {};
@@ -124,21 +126,22 @@ Game.prototype.make_step = function(old_cache, on_dispute) {
             step_winners.push(this.players[i]);
         }
     }
-    step_winners[0].deck.add_cards(cards_cache.concat(old_cache));
-    check_win = this.check_win(); if (check_win) { return check_win; };;
-    console.log("cards_cache", cards_cache, on_dispute);
-    for (var i=0; i < this.players.length; i++) {
-        check_player = this.check_player(this.players[i]); if (check_player) { return check_player; };
-    }
     if (step_winners.length > 1) {
         return {
             "result": "dispute",
             "cards": cards_cache,
-            "players": step_winners};
+            "players": this.players};
     }
-    else {
-        check_win = this.check_win(); if (check_win) { return check_win; };
+    step_winners[0].deck.add_cards(cards_cache);
+    step_winners[0].deck.add_cards(old_cache);
+    console.log(this.players[0].deck.cards.length, this.players[1].deck.cards.length);
+    check_win = this.check_win(); if (check_win) { return check_win; };
+    this.on_update();
+    console.log("cards_cache", cards_cache, on_dispute);
+    for (var i=0; i < this.players.length; i++) {
+        check_player = this.check_player(this.players[i]); if (check_player) { return check_player; };
     }
+    check_win = this.check_win(); if (check_win) { return check_win; };
     return { "result": "ok",
                  "winner": step_winners[0],
                  "card_winner": card_winner,
@@ -158,7 +161,7 @@ Game.prototype.make_steps = function(count) {
 // Genecate deck of cards function
 function generate_cards(raw_cards) {
     var cards = [];
-    for (var i = 0; i < raw_cards.length - 1; i++) {
+    for (var i = 0; i < raw_cards.length; i++) {
         card = new Card(raw_cards[i][0], raw_cards[i][1]);
         cards.push(card);
     }

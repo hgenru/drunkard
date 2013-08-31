@@ -110,14 +110,14 @@
                 player_1.innerHTML = this.players[1].deck.cards.length || 0;
             }
         </script>
-        <div class="container">
         <div class="counter">
             <h1>Карт у игроков</h1>
-            <h2>Суйка: <span id="player_0"></span>  |  Анон: <span id="player_1"></span></h2>
+            <h2>Суйка: <span id="player_0">0</span>  |  Анон: <span id="player_1">0</span></h2>
         </div>
-            <div class="table">
-                <div class="table_container "><div class="step_button" onclick="step()"/></div></div>
-            </div>
+        <div class="container">
+        <div class="table">
+            <div class="table_container "><div class="step_button" onclick="step()"/></div></div>
+        </div>
             <div id="game_overlay" class="overlay">
                 <div class="dispute_box"><center><h1 id="dispute">СПОР</h1></center></div>
                 <div id="game_result" class="result">
