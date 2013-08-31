@@ -9,24 +9,29 @@
     <body>
         <script type="text/javascript">
             window.onload = function() {
-                var raw_cards = [[2, "club"],[2, "diamond"],[3, "spade"],[4, "spade"],[5, "diamond"],[6, "club"],[8, "spade"]];
+                var raw_cards = [[2, "club"],[2, "diamond"],[3, "spade"],[2, "spade"],[5, "diamond"],[7, "club"],[7, "spade"],[7, "diamond"],[7, "diamond"],[7, "diamond"],[7, "diamond"]];
                 cards = generate_cards(raw_cards);
                 game = new Game(cards, ["Суйка", "Анон"], ["#04B431", "#FA5858"]);
             };
-            function step() {
-                var step_result = game.make_step();
-                if (step_result.length <= 1) { win(step_result[0]); return; }
+            function step(old_cache, on_dispute) {
+                var step_result = game.make_step(old_cache, on_dispute);
+                if (step_result["result"] == "win") { win(step_result["winner"]); return; }
                 var card_container = document.getElementsByName("game_card_container")[0];
                 clear_overlay();
-                for (var i=0; i < step_result[2].length; i++) {
+                console.log("CARDS", step_result["cards"]);
+                console.log("STEP RESULT", step_result);
+                show_overlay();
+                for (var i=0; i < step_result["cards"].length; i++) {
                     var new_image = document.createElement('img');
-                    id_ = step_result[2][i].cost + "_of_" + step_result[2][i].suit;
+                    console.log(">>>", step_result["players"]);
+                    id_ = step_result["cards"][i].cost + "_of_" + step_result["cards"][i].suit;
                     new_image.src = "res/cards/" + id_ + "s.png";
                     new_image.id = id_
                     new_image.className = "card";
-                    new_image.style.borderColor = step_result[3][i].color;
+                    new_image.style.borderColor = step_result["players"][i].color;
                     card_container.appendChild(new_image);
-                    if (step_result[2][i] == step_result[1]) {
+                    if (step_result["result"] == "ok" && 
+                        step_result["cards"][i] == step_result["card_winner"]) {
                         console.log(id_)
                         move(id_)
                             .duration(1000)
@@ -34,19 +39,40 @@
                             .end();
                     }
                 }
-                var overlay_back = move('#game_overlay.overlay')
-                    .set('visibility', 'hidden')
-                    .delay(300)
-                    .end();
+                if (step_result["result"] == "dispute") {
+                    console.log("RES", step_result["result"])
+                    setTimeout(function() { dispute(step_result["cards"]) } , 600);
+                }
+                else {
+                    setTimeout(hide_overlay, 200);
+                }
+            }
+            function dispute(result_cards) {
+                var dispute_box = document.getElementById("dispute");
+                dispute_box.style.visibility = "visible";
+                var cards = document.querySelectorAll(".card");
+                console.log("DISPUTE_CARDS", cards);
+                for (var i=0; i < cards.length; i++) {
+                    var entry = cards[i];
+                    entry.src = "http://img0.liveinternet.ru/images/attach/c/2//68/60/68060232_d09778r02.jpg";
+                }
+                setTimeout(function() { step(result_cards, true); }, 600);
+            }
+            function show_overlay() {
                 move('#game_overlay.overlay')
                     .set('visibility', 'visible')
-                    .delay(300)
-                    .then(overlay_back)
+                    .end();
+            };
+            function hide_overlay() {
+                move('#game_overlay.overlay')
+                    .set('visibility', 'hidden')
                     .end();
             }
             function clear_overlay() {
                 var card_container = document.getElementsByName("game_card_container")[0];
                 var old_entries = document.querySelectorAll(".card");
+                var dispute = document.getElementById("dispute");
+                dispute.style.visibility = "hidden";
                 for (var i=0; i < old_entries.length; i++) {
                     var entry = old_entries[i];
                     if (entry) {
@@ -60,9 +86,7 @@
                 msg.innerHTML = player + " win!";
                 result = document.getElementById("game_result");
                 result.appendChild(msg);
-                move("#game_overlay.overlay")
-                    .set('visibility', 'visible')
-                    .end();;
+                show_overlay();
             }
         </script>
         <div class="container">
@@ -70,6 +94,7 @@
                 <div class="table_container "><div class="step_button" onclick="step()"/></div></div>
             </div>
             <div id="game_overlay" class="overlay">
+                <div class="dispute_box"><center><h1 id="dispute">СПОР</h1></center></div>
                 <div id="game_result" class="result">
                     <div name="game_card_container" class="card_container">
                     </div>

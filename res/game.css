@@ -2,6 +2,16 @@
     width: 100%;
     height: 100%;
 }
+.dispute_box {
+    position: absolute;
+    width: 100%;
+    top: 0;
+}
+.dispute_box h1{
+    visibility: hidden;
+    margin: 10px auto;
+    font-size: 64pt;
+}
 .table {
     vertical-align: bottom;
     position: absolute;
@@ -58,6 +68,7 @@
 .result {
     position: absolute;
     text-align: center;
+    font-size: 64pt;
     left: 30%;
     right: 30%;
     top: 30%;
