@@ -29,11 +29,13 @@
                     raw_cards.push([cost, "spade"]);
                 }
                 // Подгружаем изображения, чтобы потом не глючило
-                var img = new Image();
                 for (var i=2; i < raw_cards.length; i++){
+                    var img = new Image();
                     img.src = "res/cards/" + raw_cards[i][0] + "_of_" + raw_cards[i][1] + "s.png";
                 }
+                var img = new Image();
                 img.src = "res/bg_sad.png";
+                var img = new Image();
                 img.src = "res/bg_drunk.png";
                 cards = generate_cards(raw_cards);
                 game = new Game(cards, ["Суйка", "Незнакомец"], ["#04B431", "#FA5858"]);

@@ -12,6 +12,7 @@ body {
     font-family: "Underdog";
     border: 2px solid;
     border-radius: 50px;
+    font-size: 10pt;
 }
 .dispute_box {
     position: absolute;
