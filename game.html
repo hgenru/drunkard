@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title>Серьезный матч | Анон vs Суйка</title>
+        <title>Серьезный матч | Незнакомец vs Суйка</title>
         <script type="text/javascript" src="res/engine.js"></script>
         <script type="text/javascript" src="res/move.js"></script>
         <link type="text/css" rel="stylesheet" href="res/game.css"/>
@@ -26,7 +26,7 @@
                 }
                 console.log(raw_cards);
                 cards = generate_cards(raw_cards);
-                game = new Game(cards, ["Суйка", "Анон"], ["#04B431", "#FA5858"]);
+                game = new Game(cards, ["Суйка", "Незнакомец"], ["#04B431", "#FA5858"]);
             };
             function step(old_cache, on_dispute) {
                 var step_result = game.make_step(old_cache, on_dispute);
@@ -50,7 +50,7 @@
                         console.log(id_)
                         move(id_)
                             .duration(1000)
-                            .scale(1.1)
+                            .scale(1.01)
                             .end();
                     }
                 }
@@ -110,14 +110,14 @@
                 player_1.innerHTML = this.players[1].deck.cards.length || 0;
             }
         </script>
-        <div class="counter">
-            <h1>Карт у игроков</h1>
-            <h2>Суйка: <span id="player_0">0</span>  |  Анон: <span id="player_1">0</span></h2>
-        </div>
         <div class="container">
-        <div class="table">
-            <div class="table_container "><div class="step_button" onclick="step()"/></div></div>
-        </div>
+            <div class="counter">
+                <h1>Карт у игроков</h1>
+                <h2>Суйка Ибуки: <span id="player_0">0</span>  |  Незнакомец: <span id="player_1">0</span></h2>
+            </div>
+            <div class="table">
+                <div class="table_container "><div class="step_button" onclick="step()"/></div></div>
+            </div>
             <div id="game_overlay" class="overlay">
                 <div class="dispute_box"><center><h1 id="dispute">СПОР</h1></center></div>
                 <div id="game_result" class="result">
