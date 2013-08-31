@@ -18,14 +18,11 @@ Deck.prototype.get_card = function() {
     return this.cards.pop();
 };
 Deck.prototype.add_cards = function(cards_to_add) {
-    // console.log(">>>>>", cards_to_add, this.cards.length);
     var cards = this.cards;
     cards_to_add.reverse().forEach(function(element, index) {
-        // console.log(element);
         cards.unshift(element);
     });
     this.cards = cards;
-    // console.log(">>>>>", this.cards.length);
 };
 
 // Player class
@@ -33,7 +30,6 @@ function Player(name, deck_of_cards, color) {
     this.deck = new Deck(deck_of_cards);
     this.uid = name;
     this.color = color;
-    // console.log("player "+this.uid+" created"+" cards: "+this.deck.cards);
 }
 Player.prototype.toString = function() {
     return this.uid;
@@ -41,7 +37,6 @@ Player.prototype.toString = function() {
 
 // Game class
 function Game(cards, players_names, colors) {
-    // console.log("start game...");
     this.players = [];
     this.cards = cards;
     this.game_winner = null;
@@ -53,7 +48,6 @@ function Game(cards, players_names, colors) {
     }
 }
 Game.prototype.shuffle_cards = function() {
-    // console.log("shuffle cards...");
     for (var index = 0; index < this.cards.length; index++) {
         var random_index = Math.floor(Math.random() * index);
         var card_temp = this.cards[index];
@@ -63,15 +57,12 @@ Game.prototype.shuffle_cards = function() {
 };
 Game.prototype.share_cards = function(player_count) {
     this.shuffle_cards();
-    // console.log("stard share cards...");
     var players_cards = [];
     var cards_to_each = Math.floor(this.cards.length/player_count);
-    console.log(cards_to_each, this.cards.length);
     for (var i=0; player_count > i; i++) {
         cards_to_add = this.cards.splice(0, cards_to_each);
         players_cards.push(cards_to_add);
     }
-    console.log(players_cards);
     return players_cards;
 };
 Game.prototype.on_update = function() {};
@@ -86,13 +77,11 @@ Game.prototype.check_win = function() {
 Game.prototype.check_player = function(player) {
     player_index = this.players.indexOf(player);
     if (this.players[player_index].deck.cards.length == 0) {
-        console.log("player del: "+this.players[player_index]);
         this.players.splice(player_index, 1);
     }
     return this.check_win();
 };
 Game.prototype.make_step = function(old_cache, on_dispute) {
-    console.log("run step...")
     old_cache = old_cache || [];
     var dispute = [];
     var cards_cache = [];
@@ -112,13 +101,11 @@ Game.prototype.make_step = function(old_cache, on_dispute) {
         }
         check_win = this.check_win(); if (check_win) { return check_win; };
     }
-    // console.log("current cache "+cards_cache)
     for (var i=0; i < this.players.length; i++) {
         var player_card = this.players[i].deck.get_card();
         this.on_update();
         cards_cache.push(player_card);
         var max_card = Math.max.apply(Math, cards_cache);
-        console.log("INFO", cards_cache, max_card, cards_cache[i] == max_card);
         }
     for (var i=0; i < this.players.length; i++) {
         if (cards_cache[i] == max_card) {
@@ -134,10 +121,8 @@ Game.prototype.make_step = function(old_cache, on_dispute) {
     }
     step_winners[0].deck.add_cards(cards_cache);
     step_winners[0].deck.add_cards(old_cache);
-    console.log(this.players[0].deck.cards.length, this.players[1].deck.cards.length);
     check_win = this.check_win(); if (check_win) { return check_win; };
     this.on_update();
-    console.log("cards_cache", cards_cache, on_dispute);
     for (var i=0; i < this.players.length; i++) {
         check_player = this.check_player(this.players[i]); if (check_player) { return check_player; };
     }

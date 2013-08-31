@@ -24,7 +24,10 @@
                 for (var cost=2; cost < 15; cost++) {
                     raw_cards.push([cost, "spade"]);
                 }
-                console.log(raw_cards);
+                for (var i=2; i < raw_cards.length; i++){
+                    var img = new Image();
+                    img.src = "res/cards/" + raw_cards[i][0] + "_of_" + raw_cards[i][1] + "s.png";
+                }
                 cards = generate_cards(raw_cards);
                 game = new Game(cards, ["Суйка", "Незнакомец"], ["#04B431", "#FA5858"]);
             };
@@ -33,12 +36,9 @@
                 if (step_result["result"] == "win") { win(step_result["winner"]); return; }
                 var card_container = document.getElementsByName("game_card_container")[0];
                 clear_overlay();
-                console.log("CARDS", step_result["cards"]);
-                console.log("STEP RESULT", step_result);
                 show_overlay();
                 for (var i=0; i < step_result["cards"].length; i++) {
                     var new_image = document.createElement('img');
-                    console.log(">>>", step_result["players"]);
                     id_ = step_result["cards"][i].cost + "_of_" + step_result["cards"][i].suit;
                     new_image.src = "res/cards/" + id_ + "s.png";
                     new_image.id = id_
@@ -47,7 +47,6 @@
                     card_container.appendChild(new_image);
                     if (step_result["result"] == "ok" && 
                         step_result["cards"][i] == step_result["card_winner"]) {
-                        console.log(id_)
                         move(id_)
                             .duration(1000)
                             .scale(1.01)
@@ -55,7 +54,6 @@
                     }
                 }
                 if (step_result["result"] == "dispute") {
-                    console.log("RES", step_result["result"])
                     setTimeout(function() { dispute(step_result["cards"]) } , 600);
                 }
                 else {
@@ -66,7 +64,6 @@
                 var dispute_box = document.getElementById("dispute");
                 dispute_box.style.visibility = "visible";
                 var cards = document.querySelectorAll(".card");
-                console.log("DISPUTE_CARDS", cards);
                 for (var i=0; i < cards.length; i++) {
                     var entry = cards[i];
                     entry.src = "http://img0.liveinternet.ru/images/attach/c/2//68/60/68060232_d09778r02.jpg";
