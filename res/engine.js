@@ -19,7 +19,7 @@ Deck.prototype.get_card = function() {
 };
 Deck.prototype.add_cards = function(cards_to_add) {
     var cards = this.cards;
-    cards_to_add.reverse().forEach(function(element, index) {
+    cards_to_add.forEach(function(element, index) {
         cards.unshift(element);
     });
     this.cards = cards;
@@ -105,8 +105,8 @@ Game.prototype.make_step = function(old_cache, on_dispute) {
         var player_card = this.players[i].deck.get_card();
         this.on_update();
         cards_cache.push(player_card);
-        var max_card = Math.max.apply(Math, cards_cache);
-        }
+    }
+    var max_card = Math.max.apply(Math, cards_cache);
     for (var i=0; i < this.players.length; i++) {
         if (cards_cache[i] == max_card) {
             card_winner = cards_cache[i];

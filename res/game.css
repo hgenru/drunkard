@@ -1,5 +1,6 @@
 body {
     font-size: 14pt;
+    font-family: "Underdog";
     background: #FFFEEE;
 }
 .container {
@@ -9,7 +10,6 @@ body {
 }
 .counter{
     text-align: center;
-    font-family: "Underdog";
     border: 2px solid;
     border-radius: 50px;
     font-size: 10pt;
